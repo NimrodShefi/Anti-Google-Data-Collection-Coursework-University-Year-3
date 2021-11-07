@@ -37,5 +37,5 @@ export class App extends Component {
 
 export default App;
 
-
-
+// Used this youtube tutorial to help me create the google login:
+// https://www.youtube.com/watch?v=-OgU5EAcQmo
