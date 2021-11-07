@@ -1,0 +1,25 @@
+body {
+  background-color: #333333;
+}
+
+#app_details{
+  text-align: center;
+  width: 30%;
+  padding-top: 5%;
+  padding-left: 5%;
+}
+
+#app_details h1 {
+  padding-bottom: 10%;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
