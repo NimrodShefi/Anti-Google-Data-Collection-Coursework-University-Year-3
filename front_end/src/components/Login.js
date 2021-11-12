@@ -1,12 +1,16 @@
 import './Login.css';
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
+import {sendHttpRequestJson} from "../api/sendHttpRequests" ;
 
 export class Login extends Component {
 
     responseGoogle = (response) => {
         console.log(response);
         console.log(response.profileObj);
+    }
+    successfulResponseGoogle = (response) => {
+        sendHttpRequestJson("POST", "/user_login", response);
     }
 
     render() {
@@ -24,7 +28,7 @@ export class Login extends Component {
                     <GoogleLogin
                         clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
                         buttonText="Login"
-                        onSuccess={this.responseGoogle}
+                        onSuccess={this.successfulResponseGoogle}
                         onFailure={this.responseGoogle}
                         cookiePolicy={'single_host_origin'}
                     />

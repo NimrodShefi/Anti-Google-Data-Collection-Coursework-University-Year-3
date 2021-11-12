@@ -1,12 +1,13 @@
 import './App.css';
-import React from "react";
 import Login from './components/Login';
 import { Route, Routes } from 'react-router';
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element={<Navigate replace to="/login" />} /> {/* used this: https://gist.github.com/mjackson/b5748add2795ce7448a366ae8f8ae3bb#not-server-rendering */}
         <Route exact path="/login" element={<Login />} />
       </Routes>
     </div>
