@@ -1,7 +1,7 @@
 import './Login.css';
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import {sendHttpRequestJson} from "../api/sendHttpRequests" ;
+import { sendHttpRequestJson, fetchDataTo } from "../api/sendHttpRequests";
 
 export class Login extends Component {
 
@@ -10,7 +10,9 @@ export class Login extends Component {
         console.log(response.profileObj);
     }
     successfulResponseGoogle = (response) => {
-        sendHttpRequestJson("POST", "/user_login", response);
+        console.log("hello");
+        fetchDataTo("POST", "http://localhost:3001/user_login", response.profileObj);
+        // sendHttpRequestJson("GET", "http://localhost:3001/user_login");
     }
 
     render() {
