@@ -1,13 +1,17 @@
-#app_details{
-    text-align: center;
-    width: 40%;
-    padding-top: 7%;
-    padding-left: 5%;
-    float: left;
-  }
-  
-  #app_login {
-    float: right;
-    width: 32%;
-    padding-top: 19%;
-  }
+#app_details {
+  text-align: center;
+  width: 40%;
+  padding-top: 7%;
+  padding-left: 5%;
+  float: left;
+}
+
+#app_login {
+  float: right;
+  width: 32%;
+  padding-top: 19%;
+}
+
+#message {
+  color: red;
+}

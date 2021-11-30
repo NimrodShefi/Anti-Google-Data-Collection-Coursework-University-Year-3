@@ -1,0 +1,19 @@
+.body {
+    color: white;
+    padding-left: 5%;
+    padding-top: 3%;
+}
+
+.wrap-flex {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.wrap-flex > * {
+    width: 15%;
+}
+
+#select {
+    color: black;
+}

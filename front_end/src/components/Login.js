@@ -1,18 +1,25 @@
 import './Login.css';
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { sendHttpRequestJson, fetchDataTo } from "../api/sendHttpRequests";
+import { sendData } from "../api/sendHttpRequests";
+import { Link } from 'react-router-dom';
 
 export class Login extends Component {
 
-    responseGoogle = (response) => {
-        console.log(response);
-        console.log(response.profileObj);
+    failedResponseGoogle = (response) => {
+        const element = document.getElementById("message");
+        element.innerHTML = "Login failed! Please try again later";
     }
+
     successfulResponseGoogle = (response) => {
-        console.log("hello");
-        fetchDataTo("POST", "http://localhost:3001/user_login", response.profileObj);
-        // sendHttpRequestJson("GET", "http://localhost:3001/user_login");
+        try {
+            sendData("http://localhost:3001/user_login", response.tokenId);
+            setTimeout(() => document.getElementById("navigate").click(), 300); // the server waits 300 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
+        } catch (error) {
+            const element = document.getElementById("message");
+            element.innerHTML = "Login failed! Please try again later";
+            console.error(error);
+        }
     }
 
     render() {
@@ -31,9 +38,11 @@ export class Login extends Component {
                         clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
                         buttonText="Login"
                         onSuccess={this.successfulResponseGoogle}
-                        onFailure={this.responseGoogle}
+                        onFailure={this.failedResponseGoogle}
                         cookiePolicy={'single_host_origin'}
                     />
+                    <p id="message"></p>
+                    <Link id="navigate" to="/home" hidden/>
                 </div>
             </div>
         )
