@@ -38,8 +38,8 @@ app.use(expressSession({
     name: "user_details_session",
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized: false,
-    resave: false
-    // store: new filestore()
+    resave: false,
+    store: new filestore()
 }));
 
 var session;
@@ -56,6 +56,7 @@ app.post("/user_login", (request, response) => {
         const userid = payload['sub'];
         return payload;
     }
+
     verify()
         .then((res) => {
             session = request.session;
@@ -63,19 +64,16 @@ app.post("/user_login", (request, response) => {
             session.last_name = res.family_name;
             session.email = res.email;
             session.full_name = res.name;
-            console.log("test: " + session.first_name);
-            console.log("user login session id" + session.id);
             session.save();
 
-            response.send('success');
+            response.send({sessionId: session.id});
         })
         .catch(console.error);
 });
 
 app.get("/user_details", (request, response) => {
-    session = request.session;
-    console.log("session: " + session.first_name);
-    console.log("user details session id" + session.id);
+    const jsonFile = require("../sessions/aoqfXhZ19SPIVBGzJLSyj8YQL9lDN98-.json"); // using this: https://forum.freecodecamp.org/t/node-js-session-data-not-persisting/73565, I realised each time I call request.session, I get a different session, therefore, I am going to say exactly which session to use by sending the session name to the server
+    session = jsonFile;
     if (session.first_name) {
         var user_details = {
             first_name: session.first_name,
@@ -88,8 +86,9 @@ app.get("/user_details", (request, response) => {
 });
 
 app.get("/login_status", (request, response) => {
-    session = request.session;
-    if (sess.first_name) {
+    const jsonFile = require("../sessions/aoqfXhZ19SPIVBGzJLSyj8YQL9lDN98-.json");
+    session = jsonFile;
+    if (session.first_name) {
         response.send("user logged in");
     } else {
         response.sendStatus(401);

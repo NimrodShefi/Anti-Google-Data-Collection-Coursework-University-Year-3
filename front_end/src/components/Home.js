@@ -47,7 +47,7 @@ export class Home extends Component {
     render() {
         var user_name = "test";
         var user_details = getData("http://localhost:3001/user_details");
-        console.log(user_details);
+        console.log("user details: " + user_details);
 
         return (
             <div className="body">
