@@ -16,14 +16,16 @@ export class Login extends Component {
         try {
             const cookies = new Cookies();
             var session_data = sendData("http://localhost:3001/user_login", response.tokenId);
+            session_data
+            .then(response => {
+                return response.json();
+            })
+            .then(parsedData => {
+                cookies.set("session-data", parsedData, {path:"/"});
+            });
             setTimeout(() => {
-                session_data
-                    .then(response => {
-                        cookies.set("session-data", response, {path:"/", httpOnly:true});
-                        console.log(cookies.get("session-data"));
-                    });
                 document.getElementById("navigate").click();
-            }, 300); // the server waits 300 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
+            }, 300); // the server waits 500 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
         } catch (error) {
             const element = document.getElementById("message");
             element.innerHTML = "Login failed! Please try again later";

@@ -2,7 +2,8 @@ var express = require("express");
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
-const fs = require('fs');
+var fs = require('fs');
+var path = require('path');
 var filestore = require("session-file-store")(expressSession);
 var PORT = process.env.PORT || 3001;
 var app = express();
@@ -44,7 +45,6 @@ app.use(expressSession({
 }));
 
 var session;
-var url = "../sessions/kaXLknQ2QwTdC9E8COp3WdiiTH9n7sWC.json"
 
 app.post("/user_login", (request, response) => {
     var token = request.body.info;
@@ -67,20 +67,16 @@ app.post("/user_login", (request, response) => {
                 last_name: res.family_name,
                 full_name: res.name,
                 email: res.email
-            } 
-            // session.first_name = res.given_name;
-            // session.last_name = res.family_name;
-            // session.email = res.email;
-            // session.full_name = res.name;
+            }
             session.save();
 
-            response.send({sessionId: session.id});
+            response.send({ sessionId: session.id });
         })
         .catch(console.error);
 });
 
-app.get("/user_details", (request, response) => {
-    const jsonFile = require(url); // using this: https://forum.freecodecamp.org/t/node-js-session-data-not-persisting/73565, I realised each time I call request.session, I get a different session, therefore, I am going to say exactly which session to use by sending the session name to the server
+app.post("/user_details", (request, response) => {
+    const jsonFile = require("../sessions/" + request.body.info + ".json");
     session = jsonFile;
     if (session.cookie.first_name) {
         var user_details = {
@@ -93,24 +89,27 @@ app.get("/user_details", (request, response) => {
     }
 });
 
-app.get("/login_status", (request, response) => {
-    const jsonFile = require(url);
+app.post("/login_status", (request, response) => {
+    const jsonFile = require("../sessions/" + request.body.info + ".json");
     session = jsonFile;
     if (session.cookie.first_name) {
-        response.send("user logged in");
+        response.status(200).send("user logged in");
     } else {
-        response.sendStatus(401);
+        response.status(401).send("User not recognised");
     }
 });
 
-app.get("/logout", (request, response) => {
+app.post("/logout", (request, response) => {
     try {
-        const jsonFile = require(url);
-        fs.unlinkSync(jsonFile);
-    
-        console.log("File is deleted.");
-        response.send("logout");
-
+        var url = path.resolve(__dirname, "../sessions/" + request.body.info + ".json"); // used this to successfully get the complete json file path: https://stackoverflow.com/questions/53343722/how-to-dynamically-import-data-in-a-nodejs-app
+        fs.unlink(url, function (err) {
+            if (err) {
+                throw err;
+            } else {
+                console.log("File Deleted");
+                response.status(200).send("logout");
+            }
+        });
     } catch (error) {
         console.log(error);
         response.status(500).send(error);

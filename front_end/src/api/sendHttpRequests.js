@@ -8,12 +8,7 @@ export function sendData(url, body) {
     };
     var info = fetch(url, requestOptions)
         .then(response => {
-            console.log(response);
-            return response.json();
-        })
-        .then(parsedData => {
-            console.log(parsedData);
-            return parsedData;
+            return response;
         })
         .catch(err => console.log("error: " + err));
     return info;
@@ -22,8 +17,7 @@ export function sendData(url, body) {
 export function getData(url) {
     var info = fetch(url)
         .then(response => {
-            var info = response.json();
-            return info;
+            return response.json();
         })
         .catch(err => console.error("error: " + err));
 
