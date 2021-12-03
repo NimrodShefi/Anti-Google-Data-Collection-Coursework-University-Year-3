@@ -2,6 +2,7 @@ var express = require("express");
 var cors = require('cors');
 var cookieParser = require('cookie-parser');
 var expressSession = require('express-session');
+const fs = require('fs');
 var filestore = require("session-file-store")(expressSession);
 var PORT = process.env.PORT || 3001;
 var app = express();
@@ -43,6 +44,7 @@ app.use(expressSession({
 }));
 
 var session;
+var url = "../sessions/kaXLknQ2QwTdC9E8COp3WdiiTH9n7sWC.json"
 
 app.post("/user_login", (request, response) => {
     var token = request.body.info;
@@ -60,10 +62,16 @@ app.post("/user_login", (request, response) => {
     verify()
         .then((res) => {
             session = request.session;
-            session.first_name = res.given_name;
-            session.last_name = res.family_name;
-            session.email = res.email;
-            session.full_name = res.name;
+            session.cookie = {
+                first_name: res.given_name,
+                last_name: res.family_name,
+                full_name: res.name,
+                email: res.email
+            } 
+            // session.first_name = res.given_name;
+            // session.last_name = res.family_name;
+            // session.email = res.email;
+            // session.full_name = res.name;
             session.save();
 
             response.send({sessionId: session.id});
@@ -72,23 +80,23 @@ app.post("/user_login", (request, response) => {
 });
 
 app.get("/user_details", (request, response) => {
-    const jsonFile = require("../sessions/aoqfXhZ19SPIVBGzJLSyj8YQL9lDN98-.json"); // using this: https://forum.freecodecamp.org/t/node-js-session-data-not-persisting/73565, I realised each time I call request.session, I get a different session, therefore, I am going to say exactly which session to use by sending the session name to the server
+    const jsonFile = require(url); // using this: https://forum.freecodecamp.org/t/node-js-session-data-not-persisting/73565, I realised each time I call request.session, I get a different session, therefore, I am going to say exactly which session to use by sending the session name to the server
     session = jsonFile;
-    if (session.first_name) {
+    if (session.cookie.first_name) {
         var user_details = {
-            first_name: session.first_name,
-            family_name: session.last_name,
-            full_name: session.full_name,
-            email: session.email
+            first_name: session.cookie.first_name,
+            family_name: session.cookie.last_name,
+            full_name: session.cookie.full_name,
+            email: session.cookie.email
         }
         response.send(user_details);
     }
 });
 
 app.get("/login_status", (request, response) => {
-    const jsonFile = require("../sessions/aoqfXhZ19SPIVBGzJLSyj8YQL9lDN98-.json");
+    const jsonFile = require(url);
     session = jsonFile;
-    if (session.first_name) {
+    if (session.cookie.first_name) {
         response.send("user logged in");
     } else {
         response.sendStatus(401);
@@ -96,12 +104,17 @@ app.get("/login_status", (request, response) => {
 });
 
 app.get("/logout", (request, response) => {
-    // request.session.destroy(err => {
-    //     if (err) {
-    //         return console.log(err);
-    //     }
-    // })
-    response.send("logout");
+    try {
+        const jsonFile = require(url);
+        fs.unlinkSync(jsonFile);
+    
+        console.log("File is deleted.");
+        response.send("logout");
+
+    } catch (error) {
+        console.log(error);
+        response.status(500).send(error);
+    }
 });
 
 app.listen(PORT, () => {

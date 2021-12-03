@@ -45,14 +45,17 @@ export class Home extends Component {
     };
 
     render() {
-        var user_name = "test";
         var user_details = getData("http://localhost:3001/user_details");
-        console.log("user details: " + user_details);
+
+        user_details
+            .then(response => {
+                document.getElementById("welcome_user").innerHTML = "Welcome " + response.full_name + "!" ;
+            });
 
         return (
             <div className="body">
 
-                <h1>Welcome {user_name}!</h1>
+                <h1 id="welcome_user">Welcome User!</h1>
                 <br />
                 <div id="websites_visited" className="wrap-flex">
                     <h3>Visited Websites: </h3>

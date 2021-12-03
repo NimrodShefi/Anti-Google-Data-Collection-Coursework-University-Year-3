@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { sendData } from "../api/sendHttpRequests";
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class Login extends Component {
 
@@ -13,8 +14,16 @@ export class Login extends Component {
 
     successfulResponseGoogle = (response) => {
         try {
-            sendData("http://localhost:3001/user_login", response.tokenId);
-            setTimeout(() => document.getElementById("navigate").click(), 300); // the server waits 300 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
+            const cookies = new Cookies();
+            var session_data = sendData("http://localhost:3001/user_login", response.tokenId);
+            setTimeout(() => {
+                session_data
+                    .then(response => {
+                        cookies.set("session-data", response, {path:"/", httpOnly:true});
+                        console.log(cookies.get("session-data"));
+                    });
+                document.getElementById("navigate").click();
+            }, 300); // the server waits 300 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
         } catch (error) {
             const element = document.getElementById("message");
             element.innerHTML = "Login failed! Please try again later";
