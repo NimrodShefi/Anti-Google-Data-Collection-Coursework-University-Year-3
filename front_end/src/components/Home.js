@@ -1,7 +1,7 @@
 import './Home.css';
 import React, { Component } from "react";
 import { default as ReactSelect, components } from "react-select";
-import { getData, sendData } from "../api/sendHttpRequests";
+import { sendData } from "../api/sendHttpRequests";
 import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { GoogleLogout } from 'react-google-login';
@@ -69,9 +69,11 @@ export class Home extends Component {
     }
 
     readData = (res) => {
-        this.setState({
-            user_name: res.full_name
-        });
+        if (this.state.user_name === null) {
+            this.setState({
+                user_name: res.full_name
+            });
+        }
     }
 
     render() {
@@ -87,13 +89,6 @@ export class Home extends Component {
             })
             .then(parsedData => {
                 this.readData(parsedData);
-                /* 
-                    Currently, while this works, there is a problem which I am unable to solve; 
-                    where for some reason the user_details web request is repeatedly sent across 
-                    the network. However it only happens when setState is used (readData()), 
-                    but without this, the user name doesn't appear on the web page. 
-                    This means that it causes a memory problem, which is something that needs to be fixed soon 
-                */
             });
 
         return (
