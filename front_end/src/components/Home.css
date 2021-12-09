@@ -1,6 +1,7 @@
 .body {
     color: white;
     padding-left: 5%;
+    padding-right: 15%;
     padding-top: 3%;
 }
 
@@ -10,10 +11,28 @@
     align-items: center;
 }
 
-.wrap-flex > * {
-    width: 15%;
+.wrap-flex>* {
+    padding-left: 3%;
 }
 
 #message {
     color: red;
-  }
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+#web_requests_status {
+    background-color: green;
+    color: white;
+    font-size:inherit;
+    padding: 20% 100%;
+    border-radius: 10%;
+    margin: 5% 0%;
+    cursor: pointer;
+}

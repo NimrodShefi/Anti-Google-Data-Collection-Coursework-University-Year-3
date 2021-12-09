@@ -1,9 +1,10 @@
 import './Home.css';
-import React, { Component } from "react";
-import { sendData } from "../api/sendHttpRequests";
+import React, { Component } from 'react';
+import { sendData } from '../api/sendHttpRequests';
 import { Link, Navigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { GoogleLogout } from 'react-google-login';
+import * as VARIABLES from '../VARIABLES';
 
 export class Home extends Component {
 
@@ -19,7 +20,7 @@ export class Home extends Component {
         const cookies = new Cookies();
         // should the login cookie not exist, the try will fail, which will activate the catch. In thte catch, the app will reload the login page
         try {
-            var user_details = sendData("http://localhost:3001/user_details", cookies.get("session-data").sessionId);
+            var user_details = sendData('http://localhost:3001/user_details', cookies.get('session-data').sessionId);
 
             user_details
                 .then(response => {
@@ -38,10 +39,9 @@ export class Home extends Component {
             )
         } catch (error) {
             return (
-                <Navigate to="/"/>
+                <Navigate to='/' />
             )
         }
-
     }
 }
 
@@ -52,44 +52,66 @@ function LoggedIn(props) {
 
     const successfulGoogleLogout = (response) => {
         const cookies = new Cookies();
-        var data = sendData("http://localhost:3001/logout", cookies.get("session-data").sessionId);
+        var data = sendData('http://localhost:3001/logout', cookies.get('session-data').sessionId);
         data
             .then(response => {
                 if (response.status === 200) {
-                    cookies.remove("session-data");
-                    document.getElementById("navigate").click();
+                    cookies.remove('session-data');
+                    document.getElementById('navigate').click();
                 } else {
-                    const element = document.getElementById("message");
-                    element.innerHTML = "Something went wrong. Please try again later";
+                    const element = document.getElementById('message');
+                    element.innerHTML = 'Something went wrong. Please try again later';
                 }
             })
     }
 
     const failedGoogleLogout = (response) => {
-        const element = document.getElementById("message");
-        element.innerHTML = "Failed Logout. Please try again later";
+        const element = document.getElementById('message');
+        element.innerHTML = 'Failed Logout. Please try again later';
+    }
+
+    const startWebRequest = () => {
+        var button = document.getElementById('web_requests_status');
+        if (button.value === 'false') {
+            changeValue(button, 'green', 'Start Process', true);
+        } else {
+            changeValue(button, 'red', 'Pause Process', false);
+        }
+    }
+
+    const changeValue = (button, backgroundColor, buttonText, buttonStatus) => {
+        button.style.backgroundColor = backgroundColor;
+        button.innerText = buttonText;
+        VARIABLES.setWebReqStatusButton(buttonStatus);
+        button.value = VARIABLES.web_req_status_button;
     }
 
     return (
-        <div className="body">
+        <div className='body'>
 
-            <h1 id="welcome_user">Welcome {user_name}!</h1>
+            <h1 id='welcome_user'>Welcome {user_name}!</h1>
             <br />
-            <div id="websites_visited" className="wrap-flex">
-                <h3>Visited Websites: </h3>
-                <input id="request_counter" value={req_counter} type="text" disabled />
-            </div>
-            <div>
-                <GoogleLogout
-                    clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
-                    buttonText="Logout"
-                    onLogoutSuccess={successfulGoogleLogout}
-                    onFailure={failedGoogleLogout}
-                />
-                <Link id="navigate" to="/" hidden />
-                <p id="message"></p>
+
+            <div className='left'>
+                <div id='websites_visited' className='wrap-flex'>
+                    <h3>Visited Websites: </h3>
+                    <input id='request_counter' value={req_counter} type='text' disabled />
+                </div>
+                <div>
+                    <GoogleLogout
+                        clientId='919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com'
+                        buttonText='Logout'
+                        onLogoutSuccess={successfulGoogleLogout}
+                        onFailure={failedGoogleLogout}
+                    />
+                    <Link id='navigate' to='/' hidden />
+                    <p id='message'></p>
+                </div>
             </div>
 
+            <div className='right'>
+                <button id='web_requests_status' onClick={startWebRequest}>Start Process</button>
+            </div>
         </div>
     )
 }
