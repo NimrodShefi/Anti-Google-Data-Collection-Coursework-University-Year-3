@@ -61,12 +61,19 @@ app.post("/user_login", (request, response) => {
 
     verify()
         .then((res) => {
+            var currentTime = Date.now();
+            var nextDay = currentTime + 86400000; // add 24 hours to the day
+            var dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', dateStyle: 'long' });
+            var nextDayMidnight = new Date(dateFormat.format(nextDay));
+            var finalTimeMilli = Date.parse(nextDayMidnight) - currentTime;
+
             session = request.session;
             session.cookie = {
                 first_name: res.given_name,
                 last_name: res.family_name,
                 full_name: res.name,
-                email: res.email
+                email: res.email,
+                expires: finalTimeMilli
             }
             session.save();
 
