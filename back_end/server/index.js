@@ -45,7 +45,19 @@ app.use(expressSession({
 }));
 
 var session;
-var web_requests_status = 0;
+var dbMax = 0;
+
+function getDbMax(params) {
+    const db = require("../server/websites.json");
+    dbMax = db.length;
+}
+
+// used this: https://www.geeksforgeeks.org/how-to-generate-random-number-in-given-range-using-javascript/
+function generateRandomNumber(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 app.post("/user_login", (request, response) => {
     var token = request.body.info;
@@ -60,6 +72,7 @@ app.post("/user_login", (request, response) => {
         return payload;
     }
 
+    getDbMax();
     verify()
         .then((res) => {
             var currentTime = Date.now();
@@ -67,7 +80,7 @@ app.post("/user_login", (request, response) => {
             var dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', dateStyle: 'long' });
             var nextDayMidnight = new Date(dateFormat.format(nextDay));
             var finalTimeMilli = Date.parse(nextDayMidnight) - currentTime;
-            
+
             session = request.session;
             session.cookie = {
                 first_name: res.given_name,
@@ -100,15 +113,15 @@ app.post("/user_details", (request, response) => {
 app.post("/send_request", (request, response) => {
     var url = "../sessions/" + request.body.info.sessionId + ".json";
     const jsonFile = require(url);
-    
-    var data = api.getData("https://www.google.com/search?q=london");
+    const db = require("../server/websites.json");
+    var randNum = generateRandomNumber(0, dbMax);
+    var word = db[randNum].search;
+    var data = api.getData("https://www.google.com/search?q=" + word);
     data
         .then(res => {
             if (res === 200) {
-                console.log("success");
-                response.status(200).send("success");
+                response.status(200).send(word);
             } else {
-                console.log("fail");
                 response.status(500).send("fail");
             }
         })

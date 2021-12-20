@@ -1,0 +1,502 @@
+[
+    {
+        "id": 1,
+        "search": "London",
+        "topic": "cities"
+    },
+    {
+        "id": 2,
+        "search": "Paris",
+        "topic": "cities"
+    },
+    {
+        "id": 3,
+        "search": "Athens",
+        "topic": "cities"
+    },
+    {
+        "id": 4,
+        "search": "Amsterdam",
+        "topic": "cities"
+    },
+    {
+        "id": 5,
+        "search": "Addis Ababa",
+        "topic": "cities"
+    },
+    {
+        "id": 6,
+        "search": "Adelaide",
+        "topic": "cities"
+    },
+    {
+        "id": 7,
+        "search": "Auckland",
+        "topic": "cities"
+    },
+    {
+        "id": 8,
+        "search": "Austin",
+        "topic": "cities"
+    },
+    {
+        "id": 9,
+        "search": "Bangkok",
+        "topic": "cities"
+    },
+    {
+        "id": 10,
+        "search": "Barcelona",
+        "topic": "cities"
+    },
+    {
+        "id": 11,
+        "search": "Beijing",
+        "topic": "cities"
+    },
+    {
+        "id": 12,
+        "search": "Berlin",
+        "topic": "cities"
+    },
+    {
+        "id": 13,
+        "search": "Bogota",
+        "topic": "cities"
+    },
+    {
+        "id": 14,
+        "search": "Bordeaux",
+        "topic": "cities"
+    },
+    {
+        "id": 15,
+        "search": "Boston",
+        "topic": "cities"
+    },
+    {
+        "id": 16,
+        "search": "Brisbane",
+        "topic": "cities"
+    },
+    {
+        "id": 17,
+        "search": "Brussels",
+        "topic": "cities"
+    },
+    {
+        "id": 18,
+        "search": "Budapest",
+        "topic": "cities"
+    },
+    {
+        "id": 19,
+        "search": "Buenos Aires",
+        "topic": "cities"
+    },
+    {
+        "id": 20,
+        "search": "Jerusalem",
+        "topic": "cities"
+    },
+    {
+        "id": 21,
+        "search": "Cairns",
+        "topic": "cities"
+    },
+    {
+        "id": 22,
+        "search": "Cairo",
+        "topic": "cities"
+    },
+    {
+        "id": 23,
+        "search": "Canberra",
+        "topic": "cities"
+    },
+    {
+        "id": 24,
+        "search": "Cancún",
+        "topic": "cities"
+    },
+    {
+        "id": 25,
+        "search": "Cape Town",
+        "topic": "cities"
+    },
+    {
+        "id": 26,
+        "search": "Caracas",
+        "topic": "cities"
+    },
+    {
+        "id": 27,
+        "search": "Cardiff",
+        "topic": "cities"
+    },
+    {
+        "id": 28,
+        "search": "Casablanca",
+        "topic": "cities"
+    },
+    {
+        "id": 29,
+        "search": "Chiang Mai",
+        "topic": "cities"
+    },
+    {
+        "id": 30,
+        "search": "Chicago",
+        "topic": "cities"
+    },
+    {
+        "id": 31,
+        "search": "Copenhagen",
+        "topic": "cities"
+    },
+    {
+        "id": 32,
+        "search": "Dubai",
+        "topic": "cities"
+    },
+    {
+        "id": 33,
+        "search": "Dublin",
+        "topic": "cities"
+    },
+    {
+        "id": 34,
+        "search": "Dubrovnik",
+        "topic": "cities"
+    },
+    {
+        "id": 35,
+        "search": "Edinburgh",
+        "topic": "cities"
+    },
+    {
+        "id": 36,
+        "search": "Frankfurt",
+        "topic": "cities"
+    },
+    {
+        "id": 37,
+        "search": "Galway",
+        "topic": "cities"
+    },
+    {
+        "id": 38,
+        "search": "Guatemala City",
+        "topic": "cities"
+    },
+    {
+        "id": 39,
+        "search": "Halifax",
+        "topic": "cities"
+    },
+    {
+        "id": 40,
+        "search": "Hanoi",
+        "topic": "cities"
+    },
+    {
+        "id": 41,
+        "search": "Hong Kong",
+        "topic": "cities"
+    },
+    {
+        "id": 42,
+        "search": "Honolulu",
+        "topic": "cities"
+    },
+    {
+        "id": 43,
+        "search": "Istanbul",
+        "topic": "cities"
+    },
+    {
+        "id": 44,
+        "search": "Jakarta",
+        "topic": "cities"
+    },
+    {
+        "id": 45,
+        "search": "Johannesburg",
+        "topic": "cities"
+    },
+    {
+        "id": 46,
+        "search": "Killarney",
+        "topic": "cities"
+    },
+    {
+        "id": 47,
+        "search": "Kingston",
+        "topic": "cities"
+    },
+    {
+        "id": 48,
+        "search": "Kolkata",
+        "topic": "cities"
+    },
+    {
+        "id": 49,
+        "search": "Kraków",
+        "topic": "cities"
+    },
+    {
+        "id": 50,
+        "search": "Kuala Lumpur",
+        "topic": "cities"
+    },
+    {
+        "id": 51,
+        "search": "Las Vegas",
+        "topic": "cities"
+    },
+    {
+        "id": 52,
+        "search": "Lima",
+        "topic": "cities"
+    },
+    {
+        "id": 53,
+        "search": "Lisbon",
+        "topic": "cities"
+    },
+    {
+        "id": 54,
+        "search": "Ljubljana",
+        "topic": "cities"
+    },
+    {
+        "id": 55,
+        "search": "Los Angeles",
+        "topic": "cities"
+    },
+    {
+        "id": 56,
+        "search": "Madrid",
+        "topic": "cities"
+    },
+    {
+        "id": 57,
+        "search": "Manila",
+        "topic": "cities"
+    },
+    {
+        "id": 58,
+        "search": "Marrakech",
+        "topic": "cities"
+    },
+    {
+        "id": 59,
+        "search": "Melbourne",
+        "topic": "cities"
+    },
+    {
+        "id": 60,
+        "search": "Mexico City",
+        "topic": "cities"
+    },
+    {
+        "id": 61,
+        "search": "Milan",
+        "topic": "cities"
+    },
+    {
+        "id": 62,
+        "search": "Montevideo",
+        "topic": "cities"
+    },
+    {
+        "id": 63,
+        "search": "Montreal",
+        "topic": "cities"
+    },
+    {
+        "id": 64,
+        "search": "Moscow",
+        "topic": "cities"
+    },
+    {
+        "id": 65,
+        "search": "Quebec",
+        "topic": "cities"
+    },
+    {
+        "id": 66,
+        "search": "Mostar",
+        "topic": "cities"
+    },
+    {
+        "id": 67,
+        "search": "Munich",
+        "topic": "cities"
+    },
+    {
+        "id": 68,
+        "search": "Nashville",
+        "topic": "cities"
+    },
+    {
+        "id": 69,
+        "search": "Nassau",
+        "topic": "cities"
+    },
+    {
+        "id": 70,
+        "search": "New Dehli",
+        "topic": "cities"
+    },
+    {
+        "id": 71,
+        "search": "New York City",
+        "topic": "cities"
+    },
+    {
+        "id": 72,
+        "search": "Orlando",
+        "topic": "cities"
+    },
+    {
+        "id": 73,
+        "search": "Ottawa",
+        "topic": "cities"
+    },
+    {
+        "id": 74,
+        "search": "Perth",
+        "topic": "cities"
+    },
+    {
+        "id": 75,
+        "search": "Prague",
+        "topic": "cities"
+    },
+    {
+        "id": 76,
+        "search": "Reykjavik",
+        "topic": "cities"
+    },
+    {
+        "id": 77,
+        "search": "Riga",
+        "topic": "cities"
+    },
+    {
+        "id": 78,
+        "search": "Rio De Janeiro",
+        "topic": "cities"
+    },
+    {
+        "id": 79,
+        "search": "Rome",
+        "topic": "cities"
+    },
+    {
+        "id": 80,
+        "search": "San Francisco",
+        "topic": "cities"
+    },
+    {
+        "id": 81,
+        "search": "Santiago",
+        "topic": "cities"
+    },
+    {
+        "id": 82,
+        "search": "Sao Paulo",
+        "topic": "cities"
+    },
+    {
+        "id": 83,
+        "search": "Seattle",
+        "topic": "cities"
+    },
+    {
+        "id": 84,
+        "search": "Seoul",
+        "topic": "cities"
+    },
+    {
+        "id": 85,
+        "search": "Shanghai",
+        "topic": "cities"
+    },
+    {
+        "id": 86,
+        "search": "Siem Reap",
+        "topic": "cities"
+    },
+    {
+        "id": 87,
+        "search": "Singapore",
+        "topic": "cities"
+    },
+    {
+        "id": 88,
+        "search": "St. Petersburg",
+        "topic": "cities"
+    },
+    {
+        "id": 89,
+        "search": "Stockholm",
+        "topic": "cities"
+    },
+    {
+        "id": 90,
+        "search": "Sydney",
+        "topic": "cities"
+    },
+    {
+        "id": 91,
+        "search": "Taipei",
+        "topic": "cities"
+    },
+    {
+        "id": 92,
+        "search": "Tallinn",
+        "topic": "cities"
+    },
+    {
+        "id": 93,
+        "search": "Tokyo",
+        "topic": "cities"
+    },
+    {
+        "id": 94,
+        "search": "Toronto",
+        "topic": "cities"
+    },
+    {
+        "id": 95,
+        "search": "Valletta",
+        "topic": "cities"
+    },
+    {
+        "id": 96,
+        "search": "Vancouver",
+        "topic": "cities"
+    },
+    {
+        "id": 97,
+        "search": "Vienna",
+        "topic": "cities"
+    },
+    {
+        "id": 98,
+        "search": "Washington D.C",
+        "topic": "cities"
+    },
+    {
+        "id": 99,
+        "search": "Wellington",
+        "topic": "cities"
+    },
+    {
+        "id": 100,
+        "search": "Tel Aviv",
+        "topic": "cities"
+    }
+]

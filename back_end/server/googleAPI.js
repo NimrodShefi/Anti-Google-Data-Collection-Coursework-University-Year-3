@@ -5,7 +5,6 @@ const axios = require('axios');
 function getData(url) {
     var info = axios.get(url)
         .then(response => {
-            console.log(response.status);
             return response.status;
         })
         .catch(error => {

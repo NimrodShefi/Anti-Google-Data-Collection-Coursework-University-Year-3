@@ -29,8 +29,7 @@ export class Home extends Component {
                 .then(parsedData => {
                     if (this.state.user_name === null) { // used this: https://reactjs.org/docs/react-component.html#componentdidupdate
                         this.setState({
-                            user_name: parsedData.full_name,
-                            req_counter: parsedData.web_req
+                            user_name: parsedData.full_name
                         });
                     }
                 });
@@ -48,24 +47,24 @@ export class Home extends Component {
 
 function webRequests(apiTimeout) {
     const cookies = new Cookies();
-    try {
+    try { // used this to help me: https://stackoverflow.com/questions/46140764/polling-api-every-x-seconds-with-react/63134447#63134447
         sendData('http://localhost:3001/send_request', { sessionId: cookies.get('session-data').sessionId })
-        .then(res => {
-            if (res.status === 200) { // if the request was successfull
-                document.getElementById('request_counter').value++;
-                if (!VARIABLES.web_req_status_button) { // if the user wants to continue --> have to check for false and not true, as when I am changin teh buttons, those are the values I'm using
-                    apiTimeout = setTimeout(() => {
-                        webRequests(apiTimeout)
-                    }, 10000);
+            .then(res => {
+                if (res.status === 200) { // if the request was successfull
+                    document.getElementById('request_counter').value++;
+                    if (!VARIABLES.web_req_status_button) { // if the user wants to continue --> have to check for false and not true, as when I am changin teh buttons, those are the values I'm using
+                        apiTimeout = setTimeout(() => {
+                            webRequests(apiTimeout)
+                        }, 10000);
+                    } else {
+                        clearTimeout(apiTimeout);
+                    }
                 } else {
                     clearTimeout(apiTimeout);
                 }
-            } else {
-                clearTimeout(apiTimeout);
-            }
-        });
+            });
     } catch (error) {
-        
+
     }
 
 }
