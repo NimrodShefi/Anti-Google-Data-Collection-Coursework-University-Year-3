@@ -7,7 +7,7 @@ var path = require('path');
 var filestore = require("session-file-store")(expressSession);
 var PORT = process.env.PORT || 3001;
 var app = express();
-
+const api = require("./googleAPI");
 
 // Google Auth
 // used this: https://www.youtube.com/watch?v=Y2ec4KQ7mP8
@@ -45,6 +45,7 @@ app.use(expressSession({
 }));
 
 var session;
+var web_requests_status = 0;
 
 app.post("/user_login", (request, response) => {
     var token = request.body.info;
@@ -66,7 +67,7 @@ app.post("/user_login", (request, response) => {
             var dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', dateStyle: 'long' });
             var nextDayMidnight = new Date(dateFormat.format(nextDay));
             var finalTimeMilli = Date.parse(nextDayMidnight) - currentTime;
-
+            
             session = request.session;
             session.cookie = {
                 first_name: res.given_name,
@@ -96,14 +97,21 @@ app.post("/user_details", (request, response) => {
     }
 });
 
-app.post("/login_status", (request, response) => {
-    const jsonFile = require("../sessions/" + request.body.info + ".json");
-    session = jsonFile;
-    if (session.cookie.first_name) {
-        response.status(200).send("user logged in");
-    } else {
-        response.status(401).send("User not recognised");
-    }
+app.post("/send_request", (request, response) => {
+    var url = "../sessions/" + request.body.info.sessionId + ".json";
+    const jsonFile = require(url);
+    
+    var data = api.getData("https://www.google.com/search?q=london");
+    data
+        .then(res => {
+            if (res === 200) {
+                console.log("success");
+                response.status(200).send("success");
+            } else {
+                console.log("fail");
+                response.status(500).send("fail");
+            }
+        })
 });
 
 app.post("/logout", (request, response) => {

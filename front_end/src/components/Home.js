@@ -12,7 +12,7 @@ export class Home extends Component {
         super(props);
         this.state = {
             req_counter: 0,
-            user_name: null
+            user_name: null,
         };
     }
 
@@ -29,7 +29,8 @@ export class Home extends Component {
                 .then(parsedData => {
                     if (this.state.user_name === null) { // used this: https://reactjs.org/docs/react-component.html#componentdidupdate
                         this.setState({
-                            user_name: parsedData.full_name
+                            user_name: parsedData.full_name,
+                            req_counter: parsedData.web_req
                         });
                     }
                 });
@@ -43,6 +44,30 @@ export class Home extends Component {
             )
         }
     }
+}
+
+function webRequests(apiTimeout) {
+    const cookies = new Cookies();
+    try {
+        sendData('http://localhost:3001/send_request', { sessionId: cookies.get('session-data').sessionId })
+        .then(res => {
+            if (res.status === 200) { // if the request was successfull
+                document.getElementById('request_counter').value++;
+                if (!VARIABLES.web_req_status_button) { // if the user wants to continue --> have to check for false and not true, as when I am changin teh buttons, those are the values I'm using
+                    apiTimeout = setTimeout(() => {
+                        webRequests(apiTimeout)
+                    }, 10000);
+                } else {
+                    clearTimeout(apiTimeout);
+                }
+            } else {
+                clearTimeout(apiTimeout);
+            }
+        });
+    } catch (error) {
+        
+    }
+
 }
 
 function LoggedIn(props) {
@@ -76,6 +101,9 @@ function LoggedIn(props) {
             changeValue(button, 'green', 'Start Process', true);
         } else {
             changeValue(button, 'red', 'Pause Process', false);
+            let apiTimeout = setTimeout(() => {
+                webRequests(apiTimeout)
+            }, 10000);
         }
     }
 
@@ -95,22 +123,23 @@ function LoggedIn(props) {
             <div className='left'>
                 <div id='websites_visited' className='wrap-flex'>
                     <h3>Visited Websites: </h3>
-                    <input id='request_counter' value={req_counter} type='text' disabled />
+                    <input id='request_counter' value={req_counter} type='text' aria-label='request counter' disabled />
                 </div>
-                <div>
+                <div aria-label='logout section'>
                     <GoogleLogout
                         clientId='919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com'
                         buttonText='Logout'
                         onLogoutSuccess={successfulGoogleLogout}
                         onFailure={failedGoogleLogout}
+                        alt='logout button'
                     />
                     <Link id='navigate' to='/' hidden />
-                    <p id='message'></p>
+                    <p id='message' aria-label='logout status'></p>
                 </div>
             </div>
 
             <div className='right'>
-                <button id='web_requests_status' onClick={startWebRequest}>Start Process</button>
+                <button id='web_requests_status' aria-label='web request status button' onClick={startWebRequest}>Start Process</button>
             </div>
         </div>
     )
