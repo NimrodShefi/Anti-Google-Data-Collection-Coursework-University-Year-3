@@ -55,7 +55,7 @@ function webRequests(apiTimeout) {
                     if (!VARIABLES.web_req_status_button) { // if the user wants to continue --> have to check for false and not true, as when I am changin teh buttons, those are the values I'm using
                         apiTimeout = setTimeout(() => {
                             webRequests(apiTimeout)
-                        }, 10000);
+                        }, 5000);
                     } else {
                         clearTimeout(apiTimeout);
                     }

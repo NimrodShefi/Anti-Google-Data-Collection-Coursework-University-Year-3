@@ -114,7 +114,7 @@ app.post("/send_request", (request, response) => {
     var url = "../sessions/" + request.body.info.sessionId + ".json";
     const jsonFile = require(url);
     const db = require("../server/websites.json");
-    var randNum = generateRandomNumber(0, dbMax);
+    var randNum = generateRandomNumber(0, dbMax-1);
     var word = db[randNum].search;
     var data = api.getData("https://www.google.com/search?q=" + word);
     data

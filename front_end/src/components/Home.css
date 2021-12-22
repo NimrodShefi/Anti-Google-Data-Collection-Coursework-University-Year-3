@@ -1,5 +1,5 @@
 .body {
-    color: white;
+    color: #fffdd0;
     padding-left: 5%;
     padding-right: 15%;
     padding-top: 3%;
@@ -29,7 +29,7 @@
 
 #web_requests_status {
     background-color: green;
-    color: white;
+    color: #fffdd0;
     font-size:inherit;
     padding: 20% 100%;
     border-radius: 10%;
