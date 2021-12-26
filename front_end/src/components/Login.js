@@ -2,7 +2,7 @@ import './Login.css';
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
 import { sendData } from "../api/sendHttpRequests";
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 export class Login extends Component {
@@ -34,29 +34,38 @@ export class Login extends Component {
     }
 
     render() {
-        return (
-            <div>
-                <div id="app_details">
-                    <h1>Data Protector</h1>
-                    <p>By logging in to your Google Account here, you are able to provide yourself increased privacy from Google's alogirthm by letting us visit many website under your name.
-                        To ensure that you are completely comfortable in using our services, you are able to opt out of us loading some of the webistes on the list if you don't want.
-                        <br /><br />
-                        In addition to that, to ensure your privacy, the moment you close the app, all the data stored about you in our systems will be deleted, unless you decide otherwise.</p>
+        const cookies = new Cookies();
+        try {
+            var try_cookie = cookies.get('session-data').sessionId;
+            return (
+                <Navigate to='/home' />
+            )
+        } catch (error) {
+            return (
+                <div>
+                    <div id="app_details">
+                        <h1>Data Protector</h1>
+                        <p>By logging in to your Google Account here, you are able to provide yourself increased privacy from Google's alogirthm by letting us visit many website under your name.
+                            To ensure that you are completely comfortable in using our services, you are able to opt out of us loading some of the webistes on the list if you don't want.
+                            <br /><br />
+                            In addition to that, to ensure your privacy, the moment you close the app, all the data stored about you in our systems will be deleted, unless you decide otherwise.</p>
+                    </div>
+    
+                    <div id="app_login" aria-label='login section'>
+                        <GoogleLogin
+                            clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={this.successfulResponseGoogle}
+                            onFailure={this.failedResponseGoogle}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                        <p id="message" aria-label='login status'></p>
+                        <Link id="navigate" to="/home" hidden />
+                    </div>
                 </div>
-
-                <div id="app_login" aria-label='login section'>
-                    <GoogleLogin
-                        clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
-                        buttonText="Login"
-                        onSuccess={this.successfulResponseGoogle}
-                        onFailure={this.failedResponseGoogle}
-                        cookiePolicy={'single_host_origin'}
-                    />
-                    <p id="message" aria-label='login status'></p>
-                    <Link id="navigate" to="/home" hidden />
-                </div>
-            </div>
-        )
+            )
+        }
+        
     }
 }
 
