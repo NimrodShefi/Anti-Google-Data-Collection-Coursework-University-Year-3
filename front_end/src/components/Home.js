@@ -1,6 +1,6 @@
 import './Home.css';
 import React, { Component } from 'react';
-import { sendData } from '../api/sendHttpRequests';
+import { sendData, decryptData } from '../api/sendHttpRequests';
 import { Link, Navigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { GoogleLogout } from 'react-google-login';
@@ -29,7 +29,7 @@ export class Home extends Component {
                 .then(parsedData => {
                     if (this.state.user_name === null) { // used this: https://reactjs.org/docs/react-component.html#componentdidupdate
                         this.setState({
-                            user_name: parsedData.full_name
+                            user_name: decryptData(parsedData.full_name)
                         });
                     }
                 });

@@ -101,10 +101,10 @@ app.post("/user_details", (request, response) => {
     session = jsonFile;
     if (session.cookie.first_name) {
         var user_details = {
-            first_name: session.cookie.first_name,
-            family_name: session.cookie.last_name,
-            full_name: session.cookie.full_name,
-            email: session.cookie.email
+            first_name: encryptData(session.cookie.first_name),
+            family_name: encryptData(session.cookie.last_name),
+            full_name: encryptData(session.cookie.full_name),
+            email: encryptData(session.cookie.email)
         }
         response.send(user_details);
     }
@@ -120,9 +120,9 @@ app.post("/send_request", (request, response) => {
     data
         .then(res => {
             if (res === 200) {
-                response.status(200).send(word);
+                response.status(200).send(encryptData(word));
             } else {
-                response.status(500).send("fail");
+                response.status(500).send(encryptData("fail"));
             }
         })
 });
@@ -135,12 +135,12 @@ app.post("/logout", (request, response) => {
                 throw err;
             } else {
                 console.log("File Deleted");
-                response.status(200).send("logout");
+                response.status(200).send(encryptData("logout"));
             }
         });
     } catch (error) {
         console.log(error);
-        response.status(500).send(error);
+        response.status(500).send(encryptData(error));
     }
 });
 

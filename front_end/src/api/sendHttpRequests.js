@@ -32,20 +32,17 @@ export function sendLoginData(url, body) {
     return info;
 }
 
-export function getData(url) {
-    var info = fetch(url)
-        .then(response => {
-            return response.json();
-        })
-        .catch(err => console.error("error: " + err));
-
-    return info;
-}
-
-
 function encryptData(data) {
     var CryptoJS = require("crypto-js");
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), 'my-secret-key@123').toString();
 
     return ciphertext;
+}
+
+export function decryptData(data){
+    var CryptoJS = require("crypto-js");
+    var bytes = CryptoJS.AES.decrypt(data, 'my-secret-key@123');
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+    return decryptedData;
 }
