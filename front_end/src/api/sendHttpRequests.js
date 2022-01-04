@@ -32,6 +32,8 @@ export function sendLoginData(url, body) {
     return info;
 }
 
+
+// used this to encrypt all the data: https://www.code-sample.com/2019/12/react-encryption-decryption-data-text.html
 function encryptData(data) {
     var CryptoJS = require("crypto-js");
     var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), 'my-secret-key@123').toString();
