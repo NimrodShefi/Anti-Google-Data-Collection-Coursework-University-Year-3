@@ -9,6 +9,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dom": "0.0.3",
     "express": "^4.17.1",
     "google": "^2.1.0",

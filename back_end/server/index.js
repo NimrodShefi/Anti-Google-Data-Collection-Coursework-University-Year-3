@@ -60,7 +60,7 @@ function generateRandomNumber(min, max) {
 }
 
 app.post("/user_login", (request, response) => {
-    var token = request.body.info;
+    var token = decryptData(request.body.info);
 
     async function verify() {
         const ticket = await client.verifyIdToken({
@@ -91,13 +91,13 @@ app.post("/user_login", (request, response) => {
             }
             session.save();
 
-            response.send({ sessionId: session.id });
+            response.send({ sessionId: encryptData(session.id) });
         })
         .catch(console.error);
 });
 
 app.post("/user_details", (request, response) => {
-    const jsonFile = require("../sessions/" + request.body.info + ".json");
+    const jsonFile = require("../sessions/" + decryptData(request.body.info) + ".json");
     session = jsonFile;
     if (session.cookie.first_name) {
         var user_details = {
@@ -111,10 +111,10 @@ app.post("/user_details", (request, response) => {
 });
 
 app.post("/send_request", (request, response) => {
-    var url = "../sessions/" + request.body.info.sessionId + ".json";
+    var url = "../sessions/" + decryptData(request.body.info) + ".json";
     const jsonFile = require(url);
     const db = require("../server/websites.json");
-    var randNum = generateRandomNumber(0, dbMax-1);
+    var randNum = generateRandomNumber(0, dbMax - 1);
     var word = db[randNum].search;
     var data = api.getData("https://www.google.com/search?q=" + word);
     data
@@ -129,7 +129,7 @@ app.post("/send_request", (request, response) => {
 
 app.post("/logout", (request, response) => {
     try {
-        var url = path.resolve(__dirname, "../sessions/" + request.body.info + ".json"); // used this to successfully get the complete json file path: https://stackoverflow.com/questions/53343722/how-to-dynamically-import-data-in-a-nodejs-app
+        var url = path.resolve(__dirname, "../sessions/" + decryptData(request.body.info) + ".json"); // used this to successfully get the complete json file path: https://stackoverflow.com/questions/53343722/how-to-dynamically-import-data-in-a-nodejs-app
         fs.unlink(url, function (err) {
             if (err) {
                 throw err;
@@ -150,3 +150,18 @@ app.listen(PORT, () => {
 
 // used this to help me set up the basic server:
 // https://www.freecodecamp.org/news/how-to-create-a-react-app-with-a-node-backend-the-complete-guide/#:~:text=%20Tools%20You%20Will%20Need%20%201%20Step,to%20use%20it%20to%20interact%20with...%20More%20
+
+function encryptData(data) {
+    var CryptoJS = require("crypto-js");
+    var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), 'my-secret-key@123').toString();
+
+    return ciphertext;
+}
+
+function decryptData(data) {
+    var CryptoJS = require("crypto-js");
+    var bytes = CryptoJS.AES.decrypt(data, 'my-secret-key@123');
+    var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+    return decryptedData;
+}

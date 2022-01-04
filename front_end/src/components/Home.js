@@ -48,7 +48,7 @@ export class Home extends Component {
 function webRequests(apiTimeout) {
     const cookies = new Cookies();
     try { // used this to help me: https://stackoverflow.com/questions/46140764/polling-api-every-x-seconds-with-react/63134447#63134447
-        sendData('http://localhost:3001/send_request', { sessionId: cookies.get('session-data').sessionId })
+        sendData('http://localhost:3001/send_request', cookies.get('session-data').sessionId)
             .then(res => {
                 if (res.status === 200) { // if the request was successfull
                     document.getElementById('request_counter').value++;

@@ -1,7 +1,7 @@
 import './Login.css';
 import React, { Component } from "react";
 import GoogleLogin from "react-google-login";
-import { sendData } from "../api/sendHttpRequests";
+import { sendLoginData } from "../api/sendHttpRequests";
 import { Link, Navigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
@@ -15,7 +15,7 @@ export class Login extends Component {
     successfulResponseGoogle = (response) => {
         try {
             const cookies = new Cookies();
-            var session_data = sendData("http://localhost:3001/user_login", response.tokenId);
+            var session_data = sendLoginData("http://localhost:3001/user_login", response.tokenId);
             session_data
                 .then(response => {
                     return response.json();
