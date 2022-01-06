@@ -1,15 +1,10 @@
 const mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
+var dbConfig = require("../config/config")
 
 // create db connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'comsc',
-    port: 3306,
-    multipleStatements: true
-});
+const db = mysql.createConnection(dbConfig.config);
 
 function createDatabase() {
     db.connect((err) => {
@@ -17,7 +12,6 @@ function createDatabase() {
             throw err;
         }
         var schemaAndDataPath = path.resolve(__dirname, "../db/schema.sql");
-        // loads the scema first, and then the data
         fs.readFile(schemaAndDataPath, function (err, data) {
             if (err) {
                 throw err;
@@ -33,7 +27,7 @@ function createDatabase() {
     });
 }
 
-function getUserIdByEmail(email) {
+function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
         db.query("SELECT * FROM USER WHERE USER.email=" + mysql.escape(email), (err, result) => {
             if (err) {
@@ -114,4 +108,4 @@ function getAllWebsites(){
         });
     });}
 
-module.exports = { createDatabase, createUser, getUserIdByEmail, getUserById, deleteUser, getAllWebsites }
+module.exports = { createDatabase, createUser, getUserByEmail, getUserById, deleteUser, getAllWebsites }

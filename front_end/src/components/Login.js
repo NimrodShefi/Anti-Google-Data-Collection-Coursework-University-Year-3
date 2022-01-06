@@ -25,7 +25,7 @@ export class Login extends Component {
                 });
             setTimeout(() => {
                 document.getElementById("navigate").click();
-            }, 300); // the server waits 500 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
+            }, 500); // the server waits 500 milliseconds before clicking the link to ensure that the sendData method finishes running completely before loading the next page
         } catch (error) {
             const element = document.getElementById("message");
             element.innerHTML = "Login failed! Please try again later";
@@ -36,10 +36,12 @@ export class Login extends Component {
     render() {
         const cookies = new Cookies();
         try {
+            // if there is no error, the cookie exists, it means that the user is already logged in, and he should be taken to the home page, rather then be asked if he wants to re-log in
             var try_cookie = cookies.get('session-data').sessionId;
             return (
                 <Navigate to='/home' />
             )
+        // if there is an error, it means that the cookie was not found, and thereofre the user is not logged in, and before being allowed to use the app, he needs to log in
         } catch (error) {
             return (
                 <div>
@@ -50,7 +52,7 @@ export class Login extends Component {
                             <br /><br />
                             In addition to that, to ensure your privacy, the moment you close the app, all the data stored about you in our systems will be deleted, unless you decide otherwise.</p>
                     </div>
-    
+
                     <div id="app_login" aria-label='login section'>
                         <GoogleLogin
                             clientId="919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleusercontent.com"
@@ -65,7 +67,7 @@ export class Login extends Component {
                 </div>
             )
         }
-        
+
     }
 }
 

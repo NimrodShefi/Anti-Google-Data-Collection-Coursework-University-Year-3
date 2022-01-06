@@ -59,12 +59,11 @@ app.post("/user_login", (request, response) => {
     }
 
     getDbMax();
-    console.log(dbMax);
     verify()
         .then((res) => {
             databaseApi.createUser(res.given_name, res.family_name, res.name, res.email);
             setTimeout(() => {
-                var user = databaseApi.getUserIdByEmail(res.email);
+                var user = databaseApi.getUserByEmail(res.email);
                 user.then(data => {
                     response.send({ sessionId: encryptData(data.id) });
                 });
