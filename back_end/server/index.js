@@ -1,14 +1,11 @@
 var express = require("express");
 var cors = require('cors');
-var cookieParser = require('cookie-parser');
-var expressSession = require('express-session');
-var fs = require('fs');
-var path = require('path');
-var filestore = require("session-file-store")(expressSession);
 var PORT = process.env.PORT || 3001;
 var app = express();
-const api = require("./googleAPI");
+const gooelApi = require("./API/googleAPI");
+const databaseApi = require("./API/databaseAPI");
 
+databaseApi.createDatabase();
 // Google Auth
 // used this: https://www.youtube.com/watch?v=Y2ec4KQ7mP8
 // and this: https://developers.google.com/identity/sign-in/web/backend-auth
@@ -33,23 +30,12 @@ app.use(cors(corsOptions));
 // this allows the app to send json data across the front and back ends
 app.use(express.json());
 
-// this will be used to keep the user logged in through the user access token
-app.use(cookieParser());
-
-app.use(expressSession({
-    name: "user_details_session",
-    secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
-    saveUninitialized: false,
-    resave: false,
-    store: new filestore()
-}));
-
-var session;
 var dbMax = 0;
 
-function getDbMax(params) {
-    const db = require("../server/websites.json");
-    dbMax = db.length;
+function getDbMax() {
+    databaseApi.getAllWebsites().then(data => {
+        dbMax = data.length;
+    });
 }
 
 // used this: https://www.geeksforgeeks.org/how-to-generate-random-number-in-given-range-using-javascript/
@@ -73,71 +59,56 @@ app.post("/user_login", (request, response) => {
     }
 
     getDbMax();
+    console.log(dbMax);
     verify()
         .then((res) => {
-            var currentTime = Date.now();
-            var nextDay = currentTime + 86400000; // add 24 hours to the day
-            var dateFormat = new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: '2-digit', day: '2-digit', dateStyle: 'long' });
-            var nextDayMidnight = new Date(dateFormat.format(nextDay));
-            var finalTimeMilli = Date.parse(nextDayMidnight) - currentTime;
-
-            session = request.session;
-            session.cookie = {
-                first_name: res.given_name,
-                last_name: res.family_name,
-                full_name: res.name,
-                email: res.email,
-                expires: finalTimeMilli
-            }
-            session.save();
-
-            response.send({ sessionId: encryptData(session.id) });
+            databaseApi.createUser(res.given_name, res.family_name, res.name, res.email);
+            setTimeout(() => {
+                var user = databaseApi.getUserIdByEmail(res.email);
+                user.then(data => {
+                    response.send({ sessionId: encryptData(data.id) });
+                });
+            }, 1000)
         })
         .catch(console.error);
 });
 
 app.post("/user_details", (request, response) => {
-    const jsonFile = require("../sessions/" + decryptData(request.body.info) + ".json");
-    session = jsonFile;
-    if (session.cookie.first_name) {
+    var user = databaseApi.getUserById(decryptData(request.body.info));
+    user.then(data => {
         var user_details = {
-            first_name: encryptData(session.cookie.first_name),
-            family_name: encryptData(session.cookie.last_name),
-            full_name: encryptData(session.cookie.full_name),
-            email: encryptData(session.cookie.email)
+            first_name: encryptData(data.first_name),
+            family_name: encryptData(data.last_name),
+            full_name: encryptData(data.full_name),
+            email: encryptData(data.email)
         }
         response.send(user_details);
-    }
+    })
 });
 
 app.post("/send_request", (request, response) => {
-    var url = "../sessions/" + decryptData(request.body.info) + ".json";
-    const jsonFile = require(url);
-    const db = require("../server/websites.json");
-    var randNum = generateRandomNumber(0, dbMax - 1);
-    var word = db[randNum].search;
-    var data = api.getData("https://www.google.com/search?q=" + word);
-    data
-        .then(res => {
-            if (res === 200) {
-                response.status(200).send(encryptData(word));
-            } else {
-                response.status(500).send(encryptData("fail"));
-            }
-        })
+    var user = databaseApi.getUserById(decryptData(request.body.info)); // this is a promise
+    var websitesList = databaseApi.getAllWebsites();
+    websitesList.then(websites => {
+        var randNum = generateRandomNumber(0, dbMax - 1);
+        var word = websites[randNum].search;
+        var data = gooelApi.getData("https://www.google.com/search?q=" + word);
+        data
+            .then(res => {
+                if (res === 200) {
+                    response.status(200).send(encryptData(word));
+                } else {
+                    response.status(500).send(encryptData("fail"));
+                }
+            });
+    });
+
 });
 
 app.post("/logout", (request, response) => {
     try {
-        var url = path.resolve(__dirname, "../sessions/" + decryptData(request.body.info) + ".json"); // used this to successfully get the complete json file path: https://stackoverflow.com/questions/53343722/how-to-dynamically-import-data-in-a-nodejs-app
-        fs.unlink(url, function (err) {
-            if (err) {
-                throw err;
-            } else {
-                console.log("File Deleted");
-                response.status(200).send(encryptData("logout"));
-            }
-        });
+        databaseApi.deleteUser(decryptData(request.body.info));
+        response.status(200).send(encryptData("logout"));
     } catch (error) {
         console.log(error);
         response.status(500).send(encryptData(error));
