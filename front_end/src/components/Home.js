@@ -101,17 +101,13 @@ function LoggedIn(props) {
 
     const successfulGoogleLogout = (response) => {
         const cookies = new Cookies();
-        var data = sendData('http://localhost:3001/logout', cookies.get('session-data').sessionId);
-        data
-            .then(response => {
-                if (response.status === 200) {
-                    cookies.remove('session-data');
-                    document.getElementById('navigate').click();
-                } else {
-                    const element = document.getElementById('logout_message');
-                    element.innerHTML = 'Something went wrong. Please try again later';
-                }
-            })
+        try {
+            cookies.remove('session-data');
+            document.getElementById('navigate').click();
+        } catch (error) {
+            const element = document.getElementById('logout_message');
+            element.innerHTML = 'Something went wrong. Please try again later';
+        }
     }
 
     const failedGoogleLogout = (response) => {

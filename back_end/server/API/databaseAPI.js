@@ -99,6 +99,15 @@ function deleteUser(id) {
     });
 }
 
+function deleteAllUsers() {
+    db.query("DELETE FROM USER", (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log("all users deleted from database");
+    });
+}
+
 function getAllWebsites(){
     return new Promise((resolve, reject) => {
         db.query("SELECT * FROM WEBSITES", (err, result) => {
@@ -119,4 +128,4 @@ function updateCurrentRequests(id){
     });
 }
 
-module.exports = { createDatabase, createUser, getUserByEmail, getUserById, deleteUser, getAllWebsites, updateCurrentRequests }
+module.exports = { createDatabase, createUser, getUserByEmail, getUserById, deleteUser, getAllWebsites, updateCurrentRequests, deleteAllUsers }

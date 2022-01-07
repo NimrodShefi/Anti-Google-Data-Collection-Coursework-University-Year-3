@@ -4,6 +4,7 @@ var PORT = process.env.PORT || 3001;
 var app = express();
 const gooelApi = require("./API/googleAPI");
 const databaseApi = require("./API/databaseAPI");
+var cron = require('node-cron');
 
 // call the create DB function, which will reset the DB. This is done, becuase in the end of the day, the plan with the back end, is that it will continue to run all the time.
 databaseApi.createDatabase();
@@ -117,15 +118,22 @@ app.post("/send_request", (request, response) => {
     });
 });
 
-app.post("/logout", (request, response) => {
-    try {
-        databaseApi.deleteUser(decryptData(request.body.info));
-        response.status(200).send(encryptData("logout"));
-    } catch (error) {
-        console.log(error);
-        response.status(500).send(encryptData(error));
-    }
+// app.post("/logout", (request, response) => {
+//     try {
+//         databaseApi.deleteUser(decryptData(request.body.info));
+//         response.status(200).send(encryptData("logout"));
+//     } catch (error) {
+//         console.log(error);
+//         response.status(500).send(encryptData(error));
+//     }
+// });
+
+// create timer to delete all users from the database at the end of a day. This is done to ensure that a user can't logout and relogin and restart his daily subscription. He has to wait until the next day
+cron.schedule('0 0 * * *', () => {
+    // all users will be deleted at midnight every day.
+    databaseApi.deleteAllUsers();
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
