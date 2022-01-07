@@ -129,6 +129,9 @@ app.post("/send_request", (request, response) => {
 // });
 
 // create timer to delete all users from the database at the end of a day. This is done to ensure that a user can't logout and relogin and restart his daily subscription. He has to wait until the next day
+// used these 2 websites:
+// 1) https://github.com/ncb000gt/node-cron
+// 2) https://www.digitalocean.com/community/tutorials/nodejs-cron-jobs-by-examples
 cron.schedule('0 0 * * *', () => {
     // all users will be deleted at midnight every day.
     databaseApi.deleteAllUsers();
