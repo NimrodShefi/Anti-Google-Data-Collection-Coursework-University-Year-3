@@ -18,6 +18,7 @@ export class Login extends Component {
             var session_data = sendLoginData("http://localhost:3001/user_login", response.tokenId);
             session_data
                 .then(response => {
+                    console.log(response);
                     return response.json();
                 })
                 .then(parsedData => {

@@ -15,7 +15,7 @@
     padding-left: 3%;
 }
 
-#message {
+#logout_message {
     color: red;
 }
 
@@ -27,10 +27,19 @@
     float: left;
 }
 
+.status_button {
+    float: right;
+}
+
+.status_msg {
+    float: right;
+    clear: right;
+}
+
 #web_requests_status {
     background-color: green;
     color: #fffdd0;
-    font-size:inherit;
+    font-size: inherit;
     padding: 20% 100%;
     border-radius: 10%;
     margin: 5% 0%;

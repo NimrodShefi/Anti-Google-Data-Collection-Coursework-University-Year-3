@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS USER(
 	last_name VARCHAR(255) NOT NULL,
     full_name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
+	maxRequests INT NOT NULL,
+	currentRequests INT NOT NULL,
     PRIMARY KEY (id),
 	CONSTRAINT email_unique UNIQUE (email)
 );

@@ -29,7 +29,8 @@ export class Home extends Component {
                 .then(parsedData => {
                     if (this.state.user_name === null) { // used this: https://reactjs.org/docs/react-component.html#componentdidupdate
                         this.setState({
-                            user_name: decryptData(parsedData.full_name)
+                            user_name: decryptData(parsedData.full_name),
+                            req_counter: decryptData(parsedData.currentRequests)
                         });
                     }
                 });
@@ -59,7 +60,12 @@ function webRequests(apiTimeout) {
                     } else {
                         clearTimeout(apiTimeout);
                     }
-                } else {
+                } else if (res.status === 402) {
+                    clearTimeout(apiTimeout);
+                    startWebRequest();
+                    document.getElementById("status_message").innerHTML = "subscription plan ended. Please logout";
+                }
+                else {
                     clearTimeout(apiTimeout);
                 }
             });
@@ -67,6 +73,25 @@ function webRequests(apiTimeout) {
 
     }
 
+}
+
+function startWebRequest() {
+    var button = document.getElementById('web_requests_status');
+    if (button.value === 'false') {
+        changeValue(button, 'green', 'Start Process', true);
+    } else {
+        changeValue(button, 'red', 'Pause Process', false);
+        let apiTimeout = setTimeout(() => {
+            webRequests(apiTimeout)
+        }, 10000);
+    }
+}
+
+function changeValue(button, backgroundColor, buttonText, buttonStatus) {
+    button.style.backgroundColor = backgroundColor;
+    button.innerText = buttonText;
+    VARIABLES.setWebReqStatusButton(buttonStatus);
+    button.value = VARIABLES.web_req_status_button;
 }
 
 function LoggedIn(props) {
@@ -83,34 +108,15 @@ function LoggedIn(props) {
                     cookies.remove('session-data');
                     document.getElementById('navigate').click();
                 } else {
-                    const element = document.getElementById('message');
+                    const element = document.getElementById('logout_message');
                     element.innerHTML = 'Something went wrong. Please try again later';
                 }
             })
     }
 
     const failedGoogleLogout = (response) => {
-        const element = document.getElementById('message');
+        const element = document.getElementById('logout_message');
         element.innerHTML = 'Failed Logout. Please try again later';
-    }
-
-    const startWebRequest = () => {
-        var button = document.getElementById('web_requests_status');
-        if (button.value === 'false') {
-            changeValue(button, 'green', 'Start Process', true);
-        } else {
-            changeValue(button, 'red', 'Pause Process', false);
-            let apiTimeout = setTimeout(() => {
-                webRequests(apiTimeout)
-            }, 10000);
-        }
-    }
-
-    const changeValue = (button, backgroundColor, buttonText, buttonStatus) => {
-        button.style.backgroundColor = backgroundColor;
-        button.innerText = buttonText;
-        VARIABLES.setWebReqStatusButton(buttonStatus);
-        button.value = VARIABLES.web_req_status_button;
     }
 
     return (
@@ -133,13 +139,19 @@ function LoggedIn(props) {
                         alt='logout button'
                     />
                     <Link id='navigate' to='/' hidden />
-                    <p id='message' aria-label='logout status'></p>
+                    <p id='logout_message' aria-label='logout status'></p>
                 </div>
             </div>
 
             <div className='right'>
-                <button id='web_requests_status' aria-label='web request status button' onClick={startWebRequest}>Start Process</button>
+                <div className='status_button'>
+                    <button id='web_requests_status' aria-label='web request status button' onClick={startWebRequest}>Start Process</button>
+                </div>
+                <div className='status_msg'>
+                    <p id='status_message' aria-label='web requests status'></p>
+                </div>
             </div>
+
         </div>
     )
 }

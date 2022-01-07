@@ -59,7 +59,7 @@ function getUserById(id) {
     });
 }
 
-function createUser(first_name, last_name, full_name, email) {
+function createUser(first_name, last_name, full_name, email, maxRequests, currentRequests) {
     // check if the user already exists in the DB, if yes, return the existing user ID, if not, craete new user, and return the new user ID
     if (first_name == null) {
         first_name = "";
@@ -79,7 +79,7 @@ function createUser(first_name, last_name, full_name, email) {
         }
         if (!result || result.length < 1) {
             console.log("user doesn't exists");
-            db.query("INSERT INTO USER(first_name, last_name, full_name, email) VALUES (" + mysql.escape(first_name) + ", " + mysql.escape(last_name) + ", " + mysql.escape(full_name) + ", " + mysql.escape(email) + ")", (error, res) => {
+            db.query("INSERT INTO USER(first_name, last_name, full_name, email, maxRequests, currentRequests) VALUES (" + mysql.escape(first_name) + ", " + mysql.escape(last_name) + ", " + mysql.escape(full_name) + ", " + mysql.escape(email)+ ", " + mysql.escape(maxRequests) + ", " + mysql.escape(currentRequests) + ")", (error, res) => {
                 if (error) {
                     throw error;
                 }
@@ -95,6 +95,7 @@ function deleteUser(id) {
         if (err) {
             throw err;
         }
+        console.log("user deleted from database");
     });
 }
 
@@ -106,6 +107,16 @@ function getAllWebsites(){
             }
             return err ? reject(err) : resolve(result);
         });
-    });}
+    });
+}
 
-module.exports = { createDatabase, createUser, getUserByEmail, getUserById, deleteUser, getAllWebsites }
+function updateCurrentRequests(id){
+    db.query("UPDATE USER SET USER.currentRequests=currentRequests+1 WHERE USER.id=" +  mysql.escape(id), (err, result) => {
+        if (err) {
+            throw err;
+        }
+        console.log("entry updated");
+    });
+}
+
+module.exports = { createDatabase, createUser, getUserByEmail, getUserById, deleteUser, getAllWebsites, updateCurrentRequests }

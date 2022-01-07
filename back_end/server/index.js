@@ -5,7 +5,9 @@ var app = express();
 const gooelApi = require("./API/googleAPI");
 const databaseApi = require("./API/databaseAPI");
 
+// call the create DB function, which will reset the DB. This is done, becuase in the end of the day, the plan with the back end, is that it will continue to run all the time.
 databaseApi.createDatabase();
+
 // Google Auth
 // used this: https://www.youtube.com/watch?v=Y2ec4KQ7mP8
 // and this: https://developers.google.com/identity/sign-in/web/backend-auth
@@ -32,10 +34,8 @@ app.use(express.json());
 
 var dbMax = 0;
 
-function getDbMax() {
-    databaseApi.getAllWebsites().then(data => {
-        dbMax = data.length;
-    });
+function getDbMax(websiteList) {
+    dbMax = websiteList.length;
 }
 
 // used this: https://www.geeksforgeeks.org/how-to-generate-random-number-in-given-range-using-javascript/
@@ -58,10 +58,10 @@ app.post("/user_login", (request, response) => {
         return payload;
     }
 
-    getDbMax();
     verify()
         .then((res) => {
-            databaseApi.createUser(res.given_name, res.family_name, res.name, res.email);
+            console.log("user verified");
+            databaseApi.createUser(res.given_name, res.family_name, res.name, res.email, 2, 0);
             setTimeout(() => {
                 var user = databaseApi.getUserByEmail(res.email);
                 user.then(data => {
@@ -79,29 +79,42 @@ app.post("/user_details", (request, response) => {
             first_name: encryptData(data.first_name),
             family_name: encryptData(data.last_name),
             full_name: encryptData(data.full_name),
-            email: encryptData(data.email)
+            email: encryptData(data.email),
+            maxRequests: encryptData(data.maxRequests),
+            currentRequests: encryptData(data.currentRequests)
         }
+        console.log("user details sent");
         response.send(user_details);
     })
 });
 
 app.post("/send_request", (request, response) => {
-    var user = databaseApi.getUserById(decryptData(request.body.info)); // this is a promise
+    var user = databaseApi.getUserById(decryptData(request.body.info));
     var websitesList = databaseApi.getAllWebsites();
-    websitesList.then(websites => {
-        var randNum = generateRandomNumber(0, dbMax - 1);
-        var word = websites[randNum].search;
-        var data = gooelApi.getData("https://www.google.com/search?q=" + word);
-        data
-            .then(res => {
-                if (res === 200) {
-                    response.status(200).send(encryptData(word));
-                } else {
-                    response.status(500).send(encryptData("fail"));
-                }
+    user.then(userData => {
+        if (userData.maxRequests > userData.currentRequests) {
+            websitesList.then(websites => {
+                getDbMax(websites); // this is put here, for when the option to add websites to the database is added to the application, and DB may be updated while users use the app
+                var randNum = generateRandomNumber(0, dbMax - 1);
+                var word = websites[randNum].search;
+                var data = gooelApi.getData("https://www.google.com/search?q=" + word);
+                data
+                    .then(res => {
+                        if (res === 200) {
+                            console.log("sent word: " + word);
+                            databaseApi.updateCurrentRequests(userData.id);
+                            response.status(200).send(encryptData(word));
+                        } else {
+                            console.log("request to send word :" + word + " faild");
+                            response.status(500).send(encryptData("fail"));
+                        }
+                    });
             });
+        } else {
+            console.log("reached user limit");
+            response.status(402).send(encryptData("subscription ended"));
+        }
     });
-
 });
 
 app.post("/logout", (request, response) => {
