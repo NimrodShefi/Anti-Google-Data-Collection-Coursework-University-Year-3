@@ -62,7 +62,7 @@ app.post('/user_login', (request, response) => {
     verify()
         .then((res) => {
             console.log('user verified');
-            databaseApi.createUser(res.given_name, res.family_name, res.name, res.email, 2, 0);
+            databaseApi.createUser(res.given_name, res.family_name, res.name, res.email, 10, 0);
             setTimeout(() => {
                 var user = databaseApi.getUserByEmail(res.email);
                 user.then(data => {
