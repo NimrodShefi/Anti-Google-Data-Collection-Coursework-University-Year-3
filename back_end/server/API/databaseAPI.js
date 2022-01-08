@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 var fs = require('fs');
 var path = require('path');
-var dbConfig = require("../config/config")
+var dbConfig = require('../config/config')
 
 // create db connection
 const db = mysql.createConnection(dbConfig.config);
@@ -11,7 +11,7 @@ function createDatabase() {
         if (err) {
             throw err;
         }
-        var schemaAndDataPath = path.resolve(__dirname, "../db/schema.sql");
+        var schemaAndDataPath = path.resolve(__dirname, '../db/schema.sql');
         fs.readFile(schemaAndDataPath, function (err, data) {
             if (err) {
                 throw err;
@@ -29,7 +29,7 @@ function createDatabase() {
 
 function getUserByEmail(email) {
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM USER WHERE USER.email=" + mysql.escape(email), (err, result) => {
+        db.query('SELECT * FROM USER WHERE USER.email=' + mysql.escape(email), (err, result) => {
             if (err) {
                 throw err;
             }
@@ -45,7 +45,7 @@ function getUserByEmail(email) {
 
 function getUserById(id) {
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM USER WHERE USER.id=" + mysql.escape(id), (err, result) => {
+        db.query('SELECT * FROM USER WHERE USER.id=' + mysql.escape(id), (err, result) => {
             if (err) {
                 throw err;
             }
@@ -59,58 +59,58 @@ function getUserById(id) {
     });
 }
 
-function createUser(first_name, last_name, full_name, email, maxRequests, currentRequests) {
+function createUser(firstName, lastName, fullName, email, maxRequests, currentRequests) {
     // check if the user already exists in the DB, if yes, return the existing user ID, if not, craete new user, and return the new user ID
-    if (first_name == null) {
-        first_name = "";
+    if (firstName === null) {
+        firstName = '';
     }
-    if (last_name == null) {
-        last_name = "";
+    if (lastName === null) {
+        lastName = '';
     }
-    if (full_name == null) {
-        full_name = "";
+    if (fullName === null) {
+        fullName = '';
     }
-    if (email == null) {
-        email = "";
+    if (email === null) {
+        email = '';
     }
-    db.query("SELECT * FROM USER WHERE USER.email=" + mysql.escape(email), (err, result) => { // used this for the mysql.escape(): https://stackoverflow.com/questions/57601777/check-if-email-exists-in-mysql-database-using-nodejs
+    db.query('SELECT * FROM USER WHERE USER.email=' + mysql.escape(email), (err, result) => { // used this for the mysql.escape(): https://stackoverflow.com/questions/57601777/check-if-email-exists-in-mysql-database-using-nodejs
         if (err) {
             throw err;
         }
         if (!result || result.length < 1) {
-            console.log("user doesn't exists");
-            db.query("INSERT INTO USER(first_name, last_name, full_name, email, maxRequests, currentRequests) VALUES (" + mysql.escape(first_name) + ", " + mysql.escape(last_name) + ", " + mysql.escape(full_name) + ", " + mysql.escape(email)+ ", " + mysql.escape(maxRequests) + ", " + mysql.escape(currentRequests) + ")", (error, res) => {
+            console.log('user doesn`t exists');
+            db.query('INSERT INTO USER(firstName, lastName, fullName, email, maxRequests, currentRequests) VALUES (' + mysql.escape(firstName) + ', ' + mysql.escape(lastName) + ', ' + mysql.escape(fullName) + ', ' + mysql.escape(email)+ ', ' + mysql.escape(maxRequests) + ', ' + mysql.escape(currentRequests) + ')', (error, res) => {
                 if (error) {
                     throw error;
                 }
             });
         } else {
-            console.log("user exists");
+            console.log('user exists');
         }
     });
 }
 
 function deleteUser(id) {
-    db.query("DELETE FROM USER WHERE USER.id=" + mysql.escape(id), (err, result) => {
+    db.query('DELETE FROM USER WHERE USER.id=' + mysql.escape(id), (err, result) => {
         if (err) {
             throw err;
         }
-        console.log("user deleted from database");
+        console.log('user deleted from database');
     });
 }
 
 function deleteAllUsers() {
-    db.query("DELETE FROM USER", (err, result) => {
+    db.query('DELETE FROM USER', (err, result) => {
         if (err) {
             throw err;
         }
-        console.log("all users deleted from database");
+        console.log('all users deleted from database');
     });
 }
 
 function getAllWebsites(){
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM WEBSITES", (err, result) => {
+        db.query('SELECT * FROM WEBSITES', (err, result) => {
             if (err) {
                 throw err;
             }
@@ -120,11 +120,11 @@ function getAllWebsites(){
 }
 
 function updateCurrentRequests(id){
-    db.query("UPDATE USER SET USER.currentRequests=currentRequests+1 WHERE USER.id=" +  mysql.escape(id), (err, result) => {
+    db.query('UPDATE USER SET USER.currentRequests=currentRequests+1 WHERE USER.id=' +  mysql.escape(id), (err, result) => {
         if (err) {
             throw err;
         }
-        console.log("entry updated");
+        console.log('entry updated');
     });
 }
 

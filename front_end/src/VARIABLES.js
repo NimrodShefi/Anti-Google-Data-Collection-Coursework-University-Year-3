@@ -1,5 +1,5 @@
-export var web_req_status_button = false;
+export var webReqStatusButton = false;
 
 export function setWebReqStatusButton(newStatus) {
-    web_req_status_button = newStatus;
+    webReqStatusButton = newStatus;
 }

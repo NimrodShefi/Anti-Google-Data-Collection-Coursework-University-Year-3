@@ -4,9 +4,9 @@ USE dataProtector;
 
 CREATE TABLE IF NOT EXISTS USER(
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    first_name VARCHAR(255) NOT NULL,
-	last_name VARCHAR(255) NOT NULL,
-    full_name VARCHAR(255) NOT NULL,
+    firstName VARCHAR(255) NOT NULL,
+	lastName VARCHAR(255) NOT NULL,
+    fullName VARCHAR(255) NOT NULL,
 	email VARCHAR(255) NOT NULL,
 	maxRequests INT NOT NULL,
 	currentRequests INT NOT NULL,
