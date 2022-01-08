@@ -17,6 +17,7 @@ const CLIENT_ID = '919197055743-cr391ut1ptdgkaj5e06tb8icgi1477di.apps.googleuser
 const client = new OAuth2Client(CLIENT_ID);
 
 // Authorising whos allowed to access the server, removing the CORS errors
+// used this: https://stackfame.com/nodejs-with-cors
 var whitelist = ['http://localhost:3000', 'http://localhost:3001']
 var corsOptions = {
     origin: function (origin, callback) {
