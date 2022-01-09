@@ -1,4 +1,4 @@
-#app_details {
+#appDetails {
   text-align: center;
   color: #fffdd0;
   width: 40%;
@@ -7,7 +7,7 @@
   float: left;
 }
 
-#app_login {
+#appLogin {
   float: right;
   width: 32%;
   padding-top: 19%;

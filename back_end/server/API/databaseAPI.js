@@ -61,17 +61,17 @@ function getUserById(id) {
 
 function createUser(firstName, lastName, fullName, email, maxRequests, currentRequests) {
     // check if the user already exists in the DB, if yes, return the existing user ID, if not, craete new user, and return the new user ID
-    if (firstName === null) {
-        firstName = '';
+    if (firstName == null) {
+        firstName = ' ';
     }
-    if (lastName === null) {
-        lastName = '';
+    if (lastName == null) {
+        lastName = ' ';
     }
-    if (fullName === null) {
-        fullName = '';
+    if (fullName == null) {
+        fullName = ' ';
     }
-    if (email === null) {
-        email = '';
+    if (email == null) {
+        email = ' ';
     }
     db.query('SELECT * FROM USER WHERE USER.email=' + mysql.escape(email), (err, result) => { // used this for the mysql.escape(): https://stackoverflow.com/questions/57601777/check-if-email-exists-in-mysql-database-using-nodejs
         if (err) {

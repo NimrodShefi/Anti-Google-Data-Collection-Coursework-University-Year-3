@@ -30,7 +30,7 @@ export class Home extends Component {
                 .then(parsedData => {
                     if (this.state.userName === null) { // used this: https://reactjs.org/docs/react-component.html#componentdidupdate
                         this.setState({
-                            userName: decryptData(parsedData.full_name),
+                            userName: decryptData(parsedData.fullName),
                             reqCounter: decryptData(parsedData.currentRequests)
                         });
                     }
