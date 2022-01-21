@@ -1,6 +1,6 @@
 # About the app
 
-This app provides users with incresed privacy by reducing teh effectiveness of Google's targeted ads.
+This app provides users with incresed privacy by reducing the effectiveness of Google's targeted ads.
 
 ## Using the app
 ---
@@ -9,7 +9,8 @@ This app provides users with incresed privacy by reducing teh effectiveness of G
 To run the app, please ensure that you have Node JS & MySQL installed on the computer and one of the users for MySQL is with these details:
 - username: root
 - password: comsc
-After you've ensured this, the enxt thing you need to do it go to the front end directory, and run the script:
+
+After you've ensured this, the next thing you need to do it go to the front end directory, and run the script:
 "npm start".
 Once you've done that, do the exact same thing with "npm start" on the back end directory. Once both servers are running, go to localhost:3000, and start using the app.
 
@@ -25,7 +26,7 @@ To run tests, go to the front end directory and run the following command: "npm 
 
 ### **Frameworks used:**
 #### _Express JS_
-I have used Express JS because through this frameowkr I am able to easily create routes for my front end application to use, and because my application is a web based, it means that it will use JS anyway, which means that the usage of Express JS for my back end will just make it easier to implement and maintain, as there is no need for multiple developers who each one specialises in one technology. Here the developer working on the front end, can also work on the back end, reduing the needed manpower to maintain and develop the app.
+I have used Express JS because through this framework I am able to easily create routes for my front end application to use, and because my application is a web based, it means that it will use JS anyway, which means that the usage of Express JS for my back end will just make it easier to implement and maintain, as there is no need for multiple developers who each one specialises in one technology. Here the developer working on the front end, can also work on the back end, reduing the needed manpower to maintain and develop the app.
 
 Resources Used:
 
@@ -121,7 +122,7 @@ Resources Used:
 
 ### **Tools used:**
 #### _nodemon_
-This is useful in develoment as it means that servers restart automatically afte every change, which makes development slighly faster as there is no need to manually restart teh server after making changes. Allows for faster manual testing.
+This is useful in develoment as it means that servers restart automatically afte every change, which makes development slighly faster as there is no need to manually restart the server after making changes. Allows for faster manual testing.
 
 Resources Used:
 
