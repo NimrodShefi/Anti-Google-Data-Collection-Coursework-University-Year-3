@@ -23,11 +23,9 @@ export class Login extends Component {
                 })
                 .then(parsedData => {
                     cookies.set('session-data', parsedData, { path: '/' });
+                    document.getElementById('navigate').click();
                 });
-            setTimeout(() => {
-                document.getElementById('navigate').click();
-            }, 500); // the server waits 500 milliseconds before clicking the 
-            // link to ensure that the sendData method finishes running completely before loading the next page
+
         } catch (error) {
             const element = document.getElementById('message');
             element.innerHTML = 'Login failed! Please try again later';
