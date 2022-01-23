@@ -51,11 +51,9 @@ export class Login extends Component {
                         <h1>Data Protector</h1>
                         <p>By logging in to your Google Account here, you are able to provide yourself with increased privacy 
                             from Google's alogirthm by letting us visit many website under your name.
-                            To ensure that you are completely comfortable in using our services, 
-                            you are able to opt out of us loading some of the webistes on the list if you don't want.
                             <br /><br />
                             In addition to that, to ensure your privacy, at the end of every day, 
-                            all the data stored about you in our systems will be deleted</p>
+                            all the data stored about you in our systems will be deleted.</p>
                     </div>
 
                     <div id='appLogin' aria-label='login section'>
