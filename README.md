@@ -1,3 +1,7 @@
+FROM THE FEW TESTS DONE, THIS SYSTEM DOES NOT WORK
+
+
+
 # About the app
 
 This app provides users with incresed privacy by reducing the effectiveness of Google's targeted ads.
