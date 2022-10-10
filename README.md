@@ -8,8 +8,10 @@ This app provides users with incresed privacy by reducing the effectiveness of G
 
 ## Using the app
 ---
+*These instructions were for when it was ran on university devices. May need slight modifications to work outside*
 
 ### **Running app**
+
 To run the app, please ensure that you have Node JS & MySQL installed on the computer and one of the users for MySQL is with these details:
 - username: root
 - password: comsc
